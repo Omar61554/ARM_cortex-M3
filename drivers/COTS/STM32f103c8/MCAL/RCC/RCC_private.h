@@ -6,11 +6,14 @@
 /***********************************************************************************************************************/
 #ifndef RCC_PRIVATE_H_
 #define RCC_PRIVATE_H_
-
+/**
+ * @brief define RCC address
+ * 
+ */
 
 #define RCC_BASE_ADDRESS                                    0x40021000
 
-#define RCC_CR                            (*((volatile u32*)0x40021000+0x00))
+#define RCC_CR                            (*((volatile u32*)0x40021000+0x00)) //RW volatile
 #define RCC_CFGR                          (*((volatile u32*)0x40021000+0x04))
 #define RCC_CIR                           (*((volatile u32*)0x40021000+0x08))
 #define RCC_APB2RSTR                      (*((volatile u32*)0x40021000+0x0c))

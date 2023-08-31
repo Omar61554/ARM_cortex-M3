@@ -7,6 +7,8 @@
         "BDCR",
         "CFGR",
         "Mcal",
-        "RSTR"
-    ]
+        "RSTR",
+        "SYSCLK"
+    ],
+    "C_Cpp.dimInactiveRegions": false
 }
