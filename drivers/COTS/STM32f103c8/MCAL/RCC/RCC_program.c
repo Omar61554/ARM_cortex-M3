@@ -1,7 +1,7 @@
 /***********************************************************************************************************************/
 /************** AUTHOR: OMAR KHALED     ********************************************************************************/
 /************** DATE: 29/8/2023         ********************************************************************************/
-/************** VERSION: 0.1            ********************************************************************************/
+/************** VERSION: 0.11            ********************************************************************************/
 /************** FILE: RCC_program.c     ********************************************************************************/
 /***********************************************************************************************************************/
 
@@ -33,7 +33,7 @@ Std_ReturnType Mcal_Rcc_InitSysClock(void){
             CLR_BIT(RCC_CR,18);
 
         #else
-            #error "enter valid clock"
+            #error "enter valid HSE clock"
         #endif
 
         SET_BIT(RCC_CR,16);
@@ -48,10 +48,35 @@ Std_ReturnType Mcal_Rcc_InitSysClock(void){
         Local_Status = E_OK;
 
     #elif RCC_SYSCLK == RCC_PLL
-        SET_BIT(RCC_CR,24);
+        #if RCC_PLL_CLK == RCC_PLL_HSI_DIV_2
+            SET_BIT(RCC_CR,0);
+            RCC_CFGR = 0b0000 0000 0000 0000 0000 0000 1000 0000;
+            CLR_BIT(RCC_CFGR,16);
+            Local_Status = E_OK;
+
+        #elif RCC_PLL_CLK == RCC_PLL_HSE_DIV_2
+            SET_BIT(RCC_CR,18);
+            SET_BIT(RCC_CFGR,16);
+            Local_Status = E_OK;
+
+        #elif RCC_PLL_CLK == RCC_PLL_HSE
+            SET_BIT(RCC_CR,18);
+            SET_BIT(RCC_CFGR,16);
+            SET_BIT(RCC_CFGR,17);
+            Local_Status = E_OK;
+
+        #else
+            #error "enter valid PLL clock"
+        #endif    
+
+        // enable PLL after setting the clock since bit can be written only when PLL is disabled
+        SET_BIT(RCC_CR,24); 
         while(!GET_BIT(RCC_CR,25));
         RCC_CFGR = 0x00000010;
         Local_Status = E_OK;
+
+    
+
 
     #else  
         #error "enter valid clock"
